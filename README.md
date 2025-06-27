@@ -1,5 +1,5 @@
 # Throttlinglatest
-openfoamv2412
+
 The throttling is a very interesting transient mass transfer phenomena in which due to high pressure difference a flowing liquid turns into vapor phase. This process is widely used in refrigeration and air conditioning system which operates on vapor compression refrigeration thermodynamic cycle. 
 
 In Open-foam V-2412 there are different multiphase solvers which can capture phase change but in this study I opted to use a customized solver based on interphaseChangeFoam which is a VOF based multiphase solver designed for incompressible fluids. Though the solver belongs to incompressible family here it is used in conjunction with Peng-Robinson equation of state which helps to capture the compressibility of vapor phase.
