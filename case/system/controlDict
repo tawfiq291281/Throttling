@@ -1,0 +1,121 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | www.openfoam.com
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Solver control settings for two incompressible fluids with phase change.
+    Adapted for constant enthalpy throttling.
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM, licensed under GNU General Public License v3.
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+application ttt;
+
+startFrom latestTime;
+
+startTime 0;
+
+stopAt endTime;
+
+endTime 0.1;
+
+deltaT 1e-02;
+
+writeControl timeStep;
+
+writeInterval 1; // Increased from 100 to reduce I/O
+
+adjustTimeStep yes;
+
+maxCo  0.02; // Reduced from 0.5 for stability
+
+maxDeltaT 5e-03; // Reduced from 1e-04
+
+purgeWrite 0;
+
+writeFormat ascii;
+
+writePrecision 8;
+
+writeCompression off;
+
+timeFormat general;
+
+timePrecision 8;
+
+runTimeModifiable true;
+
+
+functions
+{
+
+    massWeightedTempOutlet
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+        writeControl    timeStep;
+        writeInterval  1; // Report every time step (1e-5 s)
+        writeFields     false;
+        log             true;
+        writeToFile     true;
+        fileName        "massWeightedTempOutlet.dat";
+        regionType      patch;
+        name            outlet;
+        operation       areaAverage;
+        weightField     rhoPhi;
+        fields          (T);
+    }
+
+    areaWeightedVaporFractionOutlet
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        enabled         true;
+        writeControl    timeStep;
+        writeInterval   1; // Report every time step (1e-5 s)
+        writeFields     false;
+        log             true;
+        writeToFile     true;
+        fileName        "areaWeightedVaporFractionOutlet.dat";
+        regionType      patch;
+        name            outlet;
+        operation       areaAverage;
+        fields          (alpha.vapour);
+    }
+    // Function object for total pressure (p) at outlet
+    areaWeightedPressureOutlet
+    {
+    type            surfaceFieldValue;
+    libs            ("libfieldFunctionObjects.so");
+    enabled         true;
+    writeControl    timeStep;
+    writeInterval   1; // Report every time step (1e-5 s)
+    writeFields     false;
+    log             true;
+    writeToFile     true;
+    fileName        "areaWeightedPressureOutlet.dat";
+    regionType      patch;
+    name            outlet;
+    operation       areaAverage;
+    fields          (p); // Changed from p_rgh to p
+    }
+}
+
+
+
+
+

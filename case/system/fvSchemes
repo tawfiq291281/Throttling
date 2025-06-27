@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2412;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler; // Retained for transient stability
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+    grad(p_rgh)     Gauss linear;
+    grad(U)         Gauss linear;
+    grad(T)         Gauss linear;
+    grad(alpha.liquid) Gauss linear; // Updated to match field name
+}
+
+divSchemes
+{
+ default         none;
+    div(rhoPhi,U)   Gauss upwind;
+    div(phi,U)      Gauss linearUpwind grad(U);
+    div(phi,omega)  Gauss upwind;
+    div(phi,k)      Gauss upwind;
+    div(phi,T)      Gauss upwind;
+    div(rhoPhi,T)   Gauss upwind;
+    div(rhoPhi,h)   Gauss upwind;
+    div(phi,alpha.liquid) Gauss interfaceCompression; // Reverted from vanLeer
+    div(phirb,alpha.liquid) Gauss linear;
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+    div(devRhoReff) Gauss linear;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    div(min(max(rhoPhi,phiMin),phiMax),h) Gauss upwind;   
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+fluxRequired
+{
+    default         no;
+    p_rgh;
+    alpha.liquid; // Updated to match field name
+}
+
+wallDist
+{
+    method meshWave; // Retained
+}
+
