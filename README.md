@@ -1,4 +1,4 @@
-# Throttlinglatest
+# Throttling Process in cfd
 
 The throttling is a very interesting transient mass transfer phenomena in which due to high pressure difference a flowing liquid turns into vapor phase. This process is widely used in refrigeration and air conditioning system which operates on vapor compression refrigeration thermodynamic cycle. 
 
