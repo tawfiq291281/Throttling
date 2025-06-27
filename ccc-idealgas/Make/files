@@ -1,3 +1,0 @@
-ttt.C
-
-EXE = $(FOAM_APPBIN)/ttt

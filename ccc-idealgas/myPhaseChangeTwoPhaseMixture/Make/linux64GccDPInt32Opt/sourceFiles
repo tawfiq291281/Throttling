@@ -1,5 +1,0 @@
-SOURCE = \
-myPhaseChangeTwoPhaseMixture/myPhaseChangeTwoPhaseMixture.C \
-Lee/Lee.C \
-
-# sources
